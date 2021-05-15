@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,20 +23,21 @@ public class RoleController {
 
     @Autowired
     public RoleController(RoleRepository roleRepository) {
-
         this.roleRepository = roleRepository;
     }
 
     @GetMapping
-    public String index(Model model) {
+    public String getRoles(Model model) {
         List<Role> roles = this.roleRepository.findAllByOrderByNameAsc();
         model.addAttribute("roles", roles);
         return "roles";
     }
 
     @PostMapping
+
+
     @ResponseStatus(HttpStatus.CREATED)
-    public String createRole(Role role, Model model){
+    public String createRole(@Valid Role role, Model model){
         this.roleRepository.save(role);
         List<Role> roles = this.roleRepository.findAllByOrderByNameAsc();
         model.addAttribute("roles", roles);
@@ -50,7 +54,7 @@ public class RoleController {
     }
 
     @PutMapping
-    public String updateById(@ModelAttribute Role role, Model model) throws RoleNotFoundException {
+    public String updateById(@ModelAttribute @Valid Role role, Model model) throws RoleNotFoundException {
         verifyIfExists(role.getId());
         this.roleRepository.saveAndFlush(role);
         List<Role> roles = this.roleRepository.findAllByOrderByNameAsc();

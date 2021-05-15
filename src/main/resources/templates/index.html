@@ -8,7 +8,7 @@
             rel="stylesheet"
             integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
             crossorigin="anonymous">
-    <title>Reservas</title>
+    <title>Início</title>
 
 </head>
 
@@ -25,39 +25,11 @@
     <div class="nav justify-content-center">
         <div class="nav nav-pills">
             <nav class="nav nav-underline" aria-label="Secondary navigation">
-                 <a><button type="button" class="btn btn-outline-primary me-2">Cargos</button> </a>
-                <a><button type="button" class="btn btn-outline-primary me-2">Perfils</button> </a>
+                <a href="/roles"><button type="button" class="btn btn-outline-primary me-2">Cargos</button> </a>
+                <a href="/profiles"><button type="button" class="btn btn-outline-primary me-2">Perfils</button> </a>
                 <a><button type="button" class="btn btn-outline-primary me-2">Usuários</button> </a>
             </nav>
         </div>
-
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Laboratório</th>
-                <th scope="col">Data</th>
-                <th scope="col">Horário</th>
-                <th scope="col">Professor</th>
-                <th scope="col">Informações adicionais</th>
-                <th scope="col">Status</th>
-                <th scope="col">Ação</th>
-            </tr>
-            </thead>
-            <tbody>
-            <div th:each="reserva : ${reservas}">
-                <tr>
-                    <th scope="row">N</th>
-                    <td><span th:text="${reserva.nomeDoLab}"></span></td>
-                    <td><span th:text="${reserva.dataDaReserva}"></span></td>
-                    <td><span th:text="${reserva.horarioDaReserva}"></span></td>
-                    <td><span th:text="${reserva.professorResponsavel}"></span></td>
-                    <td><span th:text="${reserva.informacoesComplementares}"></span></td>
-                    <td><span th:text="${reserva.status}"></span></td>
-                    <td>XXXX</td>
-                </tr>
-            </tbody>
-        </table>
 
     </div>
     </span>

@@ -8,7 +8,7 @@
             rel="stylesheet"
             integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
             crossorigin="anonymous">
-    <title>Cargos</title>
+    <title>Perfils</title>
 
 </head>
 
@@ -18,7 +18,7 @@
 <div class="container">
     <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
         <h3>Sistema de Gerencimento de Usuários</h3>
-        <h5>Cargos</h5>
+        <h5>Perfils</h5>
     </div>
 
     <div class="nav justify-content-center">
@@ -38,11 +38,11 @@
 
 
         <div class="container">
-            <h5>Cadastrar um novo cargo</h5>
-            <form action="/roles" method="POST">
+            <h5>Cadastrar um novo perfil</h5>
+            <form action="/profiles" method="POST">
                 <div>
-                    <label for="name">Nome do Cargo</label>
-                    <input name="name" placeholder="Insira o nome do Cargo"/>
+                    <label for="name">Nome do Perfil</label>
+                    <input name="name" placeholder="Insira o nome do Perfil"/>
                     <button type="submit">Cadastrar</button>
                 </div>
 
@@ -54,21 +54,25 @@
     <table class="table table-hover">
         <thead>
         <tr>
-            <th scope="col">Id do cargo</th>
-            <th scope="col">Nome do cargo (em ordem alfabética)</th>
+            <th scope="col">Id do perfil</th>
+            <th scope="col">Nome do perfil (em ordem alfabética)</th>
             <th scope="col">Opções</th>
         </tr>
         </thead>
         <tbody>
-        <div th:each="role : ${roles}">
+        <div th:each="profile : ${profiles}">
             <tr>
-                <td><span th:text="${role.id}"></span></td>
-                <td><span th:text="${role.name}"></span></td>
+                <td><span th:text="${profile.id}"></span></td>
+                <td><span th:text="${profile.name}"></span></td>
                 <td>
-                    <form th:action="@{/roles/{id}(id=${role.id})}" method="GET">
+                    <form th:action="@{/profiles/{id}(id=${profile.id})}" method="GET">
                         <button type="submit" class="btn btn-primary btn-sm">Editar</button>
                     </form>
+                    <form th:action="@{/profiles/{id}(id=${profile.id})}" method="GET">
+                        <button type="submit" class="btn btn-danger btn-sm">Remover</button>
+                    </form>
                 </td>
+
             </tr>
         </tbody>
     </table>
