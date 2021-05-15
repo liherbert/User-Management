@@ -64,7 +64,11 @@
             <tr>
                 <td><span th:text="${role.id}"></span></td>
                 <td><span th:text="${role.name}"></span></td>
-                <td><span>Opções...</span></td>
+                <td>
+                    <form th:action="@{/roles/{id}(id=${role.id})}" method="GET">
+                        <button type="submit" class="btn btn-primary btn-sm">Editar</button></td>
+                    </form>
+
 
             </tr>
         </tbody>

@@ -39,12 +39,13 @@
 
         <div class="container">
             <h5>Editar um cargo</h5>
-            <form action="/roles" method="PUT">
+            <form action="#" th:action="@{/roles}" th:object="${role}" method="post">
                 <div>
-                    <input type="hidden" name="id" value=""/>
+                    <input type="hidden" name="_method" value="put">
+                    <input type="hidden" name="id" th:value="${role.id}"/>
                     <label for="name">Nome do Cargo</label>
-                    <input name="name" placeholder="nome atual"/>
-                    <button type="submit">Cadastrar</button>
+                    <input name="name" th:value="${role.name}"/>
+                    <button type="submit">Salvar</button>
                 </div>
 
             </form>

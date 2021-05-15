@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequestMapping("/roles")
 @Controller
@@ -26,7 +27,6 @@ public class RoleController {
     @GetMapping
     public String index(Model model) {
         List<Role> roles = this.roleRepository.findAllByOrderByNameAsc();
-
         model.addAttribute("roles", roles);
         return "roles";
     }
@@ -41,11 +41,20 @@ public class RoleController {
 
     }
 
-    @PutMapping("/{id}")
-    public String updateById(@PathVariable Long id, Role role) throws RoleNotFoundException {
-        verifyIfExists(id);
-        role.setId(id);
-        this.roleRepository.save(role);
+    @GetMapping("/{id}")
+    public String finById(@PathVariable Long id, Model model){
+        Optional<Role> role = this.roleRepository.findById(id);
+        model.addAttribute("role", role.get());
+        return "editrole";
+
+    }
+
+    @PutMapping
+    public String updateById(@ModelAttribute Role role, Model model) throws RoleNotFoundException {
+        verifyIfExists(role.getId());
+        this.roleRepository.saveAndFlush(role);
+        List<Role> roles = this.roleRepository.findAllByOrderByNameAsc();
+        model.addAttribute("roles", roles);
         return "roles";
     }
 
