@@ -2,6 +2,8 @@ package com.gleyser.usermanagement.controller;
 
 import com.gleyser.usermanagement.entity.Role;
 import com.gleyser.usermanagement.entity.UserProfile;
+import com.gleyser.usermanagement.exception.RoleNotFoundException;
+import com.gleyser.usermanagement.exception.UserProfileNotFoundException;
 import com.gleyser.usermanagement.repository.UserProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -50,9 +52,19 @@ public class UserProfileController {
     }
 
     @PutMapping
-    public String editProfile(){
-        return "ok";
+    public String editProfile(@ModelAttribute @Valid UserProfile userProfile, Model model) throws UserProfileNotFoundException {
+        verifyIfProfileExists(userProfile.getId());
+        this.userProfileRepository.saveAndFlush(userProfile);
+        List<UserProfile> profiles = this.userProfileRepository.findAllByOrderByNameAsc();
+        model.addAttribute("profiles", profiles);
+        return "profiles";
     }
+
+    private UserProfile verifyIfProfileExists(Long id) throws UserProfileNotFoundException {
+        return this.userProfileRepository.findById(id)
+                .orElseThrow( () -> new UserProfileNotFoundException(id));
+    }
+
 
 
 
