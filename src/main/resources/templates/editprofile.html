@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8">
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+            crossorigin="anonymous">
+    <title>Editar perfil</title>
+
+</head>
+
+<body>
+
+
+<div class="container">
+    <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+        <h3>Sistema de Gerencimento de Usuários</h3>
+        <h5>Perfils</h5>
+    </div>
+
+    <div class="nav justify-content-center">
+        <div class="nav nav-pills">
+            <nav class="nav nav-underline" aria-label="Secondary navigation">
+                <a href="/roles">
+                    <button type="button" class="btn btn-outline-primary me-2">Cargos</button>
+                </a>
+                <a href="/profiles">
+                    <button type="button" class="btn btn-outline-primary me-2">Perfils</button>
+                </a>
+                <a>
+                    <button type="button" class="btn btn-outline-primary me-2">Usuários</button>
+                </a>
+            </nav>
+        </div>
+
+
+        <div class="container">
+            <h5>Editar um perfil</h5>
+            <form action="#" th:action="@{/profiles}" th:object="${profile}" method="post">
+                <div>
+                    <input type="hidden" name="_method" value="put">
+                    <input type="hidden" name="id" th:value="${profile.id}"/>
+                    <label for="name">Nome do Cargo</label>
+                    <input name="name" th:value="${profile.name}"/>
+                    <button type="submit">Salvar</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</div>
+</span>
+</div>
+</body>
+
+</html>

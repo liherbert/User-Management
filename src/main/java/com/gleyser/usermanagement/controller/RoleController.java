@@ -34,8 +34,6 @@ public class RoleController {
     }
 
     @PostMapping
-
-
     @ResponseStatus(HttpStatus.CREATED)
     public String createRole(@Valid Role role, Model model){
         this.roleRepository.save(role);
@@ -50,7 +48,6 @@ public class RoleController {
         Optional<Role> role = this.roleRepository.findById(id);
         model.addAttribute("role", role.get());
         return "editrole";
-
     }
 
     @PutMapping
