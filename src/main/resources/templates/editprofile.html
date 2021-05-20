@@ -39,9 +39,8 @@
 
         <div class="container">
             <h5>Editar um perfil</h5>
-            <form action="#" th:action="@{/profiles}" th:object="${profile}" method="post">
+            <form action="#" th:action="@{/profiles}" th:object="${profile}" th:method="put">
                 <div>
-                    <input type="hidden" name="_method" value="put">
                     <input type="hidden" name="id" th:value="${profile.id}"/>
                     <label for="name">Nome do Cargo</label>
                     <input name="name" th:value="${profile.name}"/>

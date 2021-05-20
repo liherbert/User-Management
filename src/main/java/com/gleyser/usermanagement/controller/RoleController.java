@@ -1,6 +1,7 @@
 package com.gleyser.usermanagement.controller;
 
 import com.gleyser.usermanagement.entity.Role;
+import com.gleyser.usermanagement.exception.DuplicateNameException;
 import com.gleyser.usermanagement.exception.RoleNotFoundException;
 import com.gleyser.usermanagement.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,8 +36,8 @@ public class RoleController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public String createRole(@Valid Role role, Model model){
-        this.roleRepository.save(role);
+    public String createRole(@Valid Role role, Model model) throws DuplicateNameException, RoleNotFoundException {
+        saveRole(role);
         List<Role> roles = this.roleRepository.findAllByOrderByNameAsc();
         model.addAttribute("roles", roles);
         return "roles";
@@ -51,17 +52,29 @@ public class RoleController {
     }
 
     @PutMapping
-    public String updateById(@ModelAttribute @Valid Role role, Model model) throws RoleNotFoundException {
-        verifyIfExists(role.getId());
-        this.roleRepository.saveAndFlush(role);
+    public String updateById(@ModelAttribute @Valid Role role, Model model) throws RoleNotFoundException, DuplicateNameException {
+        saveRole(role);
         List<Role> roles = this.roleRepository.findAllByOrderByNameAsc();
         model.addAttribute("roles", roles);
         return "roles";
     }
 
-    private Role verifyIfExists(Long id) throws RoleNotFoundException {
+    private Role verifyIfRoleExists(Long id) throws RoleNotFoundException {
         return this.roleRepository.findById(id)
                 .orElseThrow( () -> new RoleNotFoundException(id));
+    }
+
+    private Role verifyIfNameIsUnique(String name) throws DuplicateNameException {
+        if (!this.roleRepository.findByName(name).isEmpty()){
+            throw new DuplicateNameException();
+        }
+        return this.roleRepository.findByName(name).get(0);
+    }
+
+    private void saveRole(Role role) throws RoleNotFoundException, DuplicateNameException {
+        verifyIfRoleExists(role.getId());
+        verifyIfNameIsUnique(role.getName());
+        this.roleRepository.saveAndFlush(role);
     }
 
 

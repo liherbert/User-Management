@@ -2,6 +2,7 @@ package com.gleyser.usermanagement.controller;
 
 import com.gleyser.usermanagement.entity.Role;
 import com.gleyser.usermanagement.entity.UserProfile;
+import com.gleyser.usermanagement.exception.DuplicateNameException;
 import com.gleyser.usermanagement.exception.RoleNotFoundException;
 import com.gleyser.usermanagement.exception.UserProfileNotFoundException;
 import com.gleyser.usermanagement.repository.UserProfileRepository;
@@ -36,8 +37,8 @@ public class UserProfileController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public String createProfile(Model model, @Valid UserProfile userProfile){
-       this.userProfileRepository.save(userProfile);
+    public String createProfile(Model model, @Valid UserProfile userProfile) throws DuplicateNameException, UserProfileNotFoundException {
+        saveProfile(userProfile);
         List<UserProfile> profiles = this.userProfileRepository.findAllByOrderByNameAsc();
         model.addAttribute("profiles", profiles);
         return "profiles";
@@ -52,9 +53,16 @@ public class UserProfileController {
     }
 
     @PutMapping
-    public String editProfile(@ModelAttribute @Valid UserProfile userProfile, Model model) throws UserProfileNotFoundException {
-        verifyIfProfileExists(userProfile.getId());
-        this.userProfileRepository.saveAndFlush(userProfile);
+    public String editProfile(@ModelAttribute @Valid UserProfile userProfile, Model model) throws UserProfileNotFoundException, DuplicateNameException {
+        saveProfile(userProfile);
+        List<UserProfile> profiles = this.userProfileRepository.findAllByOrderByNameAsc();
+        model.addAttribute("profiles", profiles);
+        return "profiles";
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteRole(@PathVariable Long id, Model model) throws UserProfileNotFoundException {
+        this.userProfileRepository.delete(verifyIfProfileExists(id));
         List<UserProfile> profiles = this.userProfileRepository.findAllByOrderByNameAsc();
         model.addAttribute("profiles", profiles);
         return "profiles";
@@ -65,7 +73,19 @@ public class UserProfileController {
                 .orElseThrow( () -> new UserProfileNotFoundException(id));
     }
 
+    private UserProfile verifyIfNameProfileisUnique(String name) throws DuplicateNameException {
+        if (!this.userProfileRepository.findByName(name).isEmpty()){
+            throw new DuplicateNameException();
+        }
+        return this.userProfileRepository.findByName(name).get(0);
 
+    }
 
+    private void saveProfile(UserProfile userProfile) throws UserProfileNotFoundException, DuplicateNameException {
+        verifyIfProfileExists(userProfile.getId());
+        verifyIfNameProfileisUnique(userProfile.getName());
+        this.userProfileRepository.saveAndFlush(userProfile);
+
+    }
 
 }

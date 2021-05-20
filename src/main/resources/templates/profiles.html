@@ -68,7 +68,7 @@
                     <form th:action="@{/profiles/{id}(id=${profile.id})}" method="GET">
                         <button type="submit" class="btn btn-primary btn-sm">Editar</button>
                     </form>
-                    <form th:action="@{/profiles/{id}(id=${profile.id})}" method="GET">
+                    <form th:action="@{/profiles/{id}(id=${profile.id})}" th:method="delete">
                         <button type="submit" class="btn btn-danger btn-sm">Remover</button>
                     </form>
                 </td>
